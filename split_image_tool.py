@@ -5,6 +5,8 @@ from threading import Lock
 
 import cv2
 
+from units import create_dir
+
 
 class SIT:
 
@@ -66,21 +68,16 @@ class SIT:
 
 
     def _saveimg(self, sub_sn, filename, simg):
-        self._create_dir()
+        create_dir(self.save_path)
         dest_path = f"{self.save_path}/{os.path.splitext(filename)[0]}_{sub_sn}.jpg"
         self.logger.debug("保存文件路径: %s", dest_path)
         cv2.imwrite(dest_path, simg, [cv2.IMWRITE_JPEG_QUALITY,90])
 
 
-    def _create_dir(self):
-        if not os.path.isdir(self.save_path):
-            os.mkdir(self.save_path, mode=0o766)
-
-
 
 if __name__=="__main__":
     logging.basicConfig(level=logging.INFO)
-    sit = SIT("/media/ext4_data/work/工厂图", "/media/ext4_data/work/裁切图")
+    sit = SIT("/home/fido/Downloads/20210323_工厂images", "/media/ext4_data/work/20210323_工厂切割图")
     # img = sit._openimg("/media/ext4_data/work/工厂图", "202012101231_0_4887.tif")
     # sit._split("202012101231_0_4887.tif", img)
     # sit._find_files()
